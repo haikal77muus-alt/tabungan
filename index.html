@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Tabunganku - Smart Money Tracker</title>
+  <meta name="description"
+    content="Aplikasi pencatat tabungan bulanan modern, responsif untuk HP &amp; Desktop, offline-ready, dan sinkronisasi multi-device.">
+
+  <!-- Mobile & PWA Optimization Tags -->
+  <meta name="theme-color" content="#0a0e17">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no">
+
+  <!-- SVG Favicon (Tanpa Request Eksternal / 404) -->
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233b82f6'><path d='M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h2v-4h-2c0-1-.5-1.5-1-2V5z'/></svg>">
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Stylesheet Utama (Jalur Relatif untuk GitHub Pages) -->
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+  <!-- Ambient Atmospheric Glows -->
+  <div class="ambient-glow glow-blue"></div>
+  <div class="ambient-glow glow-purple"></div>
+  <div class="ambient-glow glow-emerald"></div>
+
+  <div class="app-wrapper">
+
+    <!-- Top Navigation / Navbar -->
+    <header class="navbar">
+      <div class="nav-brand">
+        <div class="brand-logo">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h2v-4h-2c0-1-.5-1.5-1-2V5z" />
+            <path d="M16 9h.01" />
+          </svg>
+        </div>
+        <div class="brand-text-wrap">
+          <h1 class="brand-title">Tabunganku<span class="brand-badge-pro">PRO</span></h1>
+          <span class="brand-subtitle">Smart Financial Tracker</span>
+        </div>
+      </div>
+
+      <!-- Action Group: Dark/Light Mode & Cloud Sync -->
+      <div class="nav-actions">
+        <!-- Tombol Ganti Tema (Dark / Light Mode) -->
+        <button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Ganti Tema (Gelap/Terang)"
+          title="Ganti Tema">
+          <span class="theme-icon sun-icon" id="sunIcon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5" />
+              <line x1="12" y1="1" x2="12" y2="3" />
+              <line x1="12" y1="21" x2="12" y2="23" />
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+              <line x1="1" y1="12" x2="3" y2="12" />
+              <line x1="21" y1="12" x2="23" y2="12" />
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+            </svg>
+          </span>
+          <span class="theme-icon moon-icon" id="moonIcon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+          </span>
+          <span class="theme-label" id="themeLabelText">Tema Gelap</span>
+        </button>
+
+        <!-- Tombol Sinkronisasi Multi-Device -->
+        <button type="button" class="sync-pill-btn" id="btnOpenSyncModal"
+          title="Pengaturan Sinkronisasi &amp; Multi-Device">
+          <span class="status-indicator-dot" id="syncStatusDot"></span>
+          <span class="sync-pill-label" id="syncStatusText">Mode Lokal</span>
+          <svg class="sync-pill-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- ===================================================================
+         HERO BALANCE CARD
+         =================================================================== -->
+    <section class="hero-card-section">
+      <div class="premium-balance-card">
+        <div class="card-ornament ornament-circle-1"></div>
+        <div class="card-ornament ornament-circle-2"></div>
+
+        <div class="card-inner-content">
+          <!-- Top Row: Eyebrow + Eye Toggle -->
+          <div class="card-top-bar">
+            <div class="balance-meta">
+              <span class="balance-tag-pill">Dompet Tabungan</span>
+              <span class="card-chip-symbol">&#9679;&#9679;&#9679;</span>
+            </div>
+
+            <button type="button" class="btn-toggle-eye" id="btnToggleBalance" title="Sembunyikan / Tampilkan Nominal">
+              <svg id="eyeIconShow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+              <svg id="eyeIconHide" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                <path
+                  d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                <line x1="1" y1="1" x2="23" y2="23" />
+              </svg>
+              <span class="eye-text">Privasi</span>
+            </button>
+          </div>
+
+          <!-- Total Saldo Display -->
+          <div class="balance-display-group">
+            <span class="balance-label-sm">Total Saldo Terkumpul</span>
+            <div class="balance-amount-row">
+              <h2 class="main-balance-text" id="totalSaldo">Rp 0</h2>
+            </div>
+          </div>
+
+          <!-- Visual Comparison Ratio Bar -->
+          <div class="ratio-progress-container">
+            <div class="ratio-text-row">
+              <span class="ratio-title">Rasio Keuangan Bulan Ini</span>
+              <span class="ratio-badge" id="ratioPercentageText">100% Pemasukan</span>
+            </div>
+            <div class="ratio-bar-track">
+              <div class="ratio-bar-fill income-fill" id="ratioBarIncome" style="width: 100%;"></div>
+              <div class="ratio-bar-fill expense-fill" id="ratioBarExpense" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <!-- Stats Grid: Pemasukan & Penarikan -->
+          <div class="glass-stats-grid">
+            <div class="glass-stat-card stat-card-income">
+              <div class="stat-icon-halo halo-income">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m7 17 10-10M17 17V7H7" />
+                </svg>
+              </div>
+              <div class="stat-content">
+                <span class="stat-caption" id="labelBulanPemasukan">Pemasukan Bulan Ini</span>
+                <span class="stat-digit text-income" id="totalPemasukanBulan">Rp 0</span>
+              </div>
+            </div>
+
+            <div class="glass-stat-card stat-card-expense">
+              <div class="stat-icon-halo halo-expense">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m7 7 10 10M17 7v10H7" />
+                </svg>
+              </div>
+              <div class="stat-content">
+                <span class="stat-caption" id="labelBulanPenarikan">Penarikan Bulan Ini</span>
+                <span class="stat-digit text-expense" id="totalPenarikanBulan">Rp 0</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content Area: Dua Kolom Rapi & Terstruktur -->
+    <main class="app-layout-grid">
+
+      <!-- ===================================================================
+           KOLOM KIRI: FORMULIR INPUT TERSTRUKTUR & RAPI
+           =================================================================== -->
+      <section class="glass-card form-container-card">
+        <div class="card-headline">
+          <div class="headline-badge bg-gradient-blue">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 5v14M5 12h14" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="headline-title">Catat Transaksi</h3>
+            <p class="headline-desc">Input tabungan masuk atau pengeluaran</p>
+          </div>
+        </div>
+
+        <form id="transactionForm" class="interactive-form" novalidate>
+
+          <!-- Segmented Toggle (Nabung vs Tarik) -->
+          <div class="form-group-field">
+            <label class="field-label">Jenis Transaksi</label>
+            <div class="modern-segmented-switch">
+              <label class="switch-item item-nabung">
+                <input type="radio" name="jenisTransaksi" value="nabung" checked>
+                <span class="switch-pill">
+                  <span class="pill-emoji">&#x1F4B0;</span>
+                  <span class="pill-text">Nabung (+)</span>
+                </span>
+              </label>
+              <label class="switch-item item-tarik">
+                <input type="radio" name="jenisTransaksi" value="tarik">
+                <span class="switch-pill">
+                  <span class="pill-emoji">&#x1F4B8;</span>
+                  <span class="pill-text">Tarik (-)</span>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Nominal & Live Preview -->
+          <div class="form-group-field">
+            <div class="field-label-group">
+              <label for="nominal" class="field-label">Nominal (Rupiah)</label>
+              <span class="live-nominal-badge" id="nominalLivePreview">Rp 0</span>
+            </div>
+
+            <!-- Flex Input Group -->
+            <div class="clean-input-group">
+              <span class="input-addon-prefix">Rp</span>
+              <input type="number" id="nominal" name="nominal" class="clean-inner-input font-bold text-lg"
+                placeholder="0" min="1" step="1" inputmode="numeric" required>
+            </div>
+
+            <!-- Pintasan Nominal Cepat -->
+            <div class="chips-block">
+              <span class="chips-title-hint">Pintasan Cepat:</span>
+              <div class="quick-chips-grid">
+                <button type="button" class="quick-chip-button" data-add="10000">+10 rb</button>
+                <button type="button" class="quick-chip-button" data-add="20000">+20 rb</button>
+                <button type="button" class="quick-chip-button" data-add="50000">+50 rb</button>
+                <button type="button" class="quick-chip-button" data-add="100000">+100 rb</button>
+                <button type="button" class="quick-chip-button" data-add="500000">+500 rb</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tanggal Transaksi -->
+          <div class="form-group-field">
+            <label for="tanggal" class="field-label">Tanggal Transaksi</label>
+            <div class="clean-input-group">
+              <input type="date" id="tanggal" name="tanggal" class="clean-inner-input date-input-full" required>
+            </div>
+          </div>
+
+          <!-- Keterangan & Kategori Cepat -->
+          <div class="form-group-field">
+            <label for="keterangan" class="field-label">Keterangan / Keperluan</label>
+            <div class="clean-input-group">
+              <span class="input-addon-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 20h9" />
+                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+                </svg>
+              </span>
+              <input type="text" id="keterangan" name="keterangan" class="clean-inner-input"
+                placeholder="Contoh: Sisa jajan, Gaji, Beli kebutuhan..." maxlength="70" required>
+            </div>
+
+            <!-- Tag Kategori Rapi -->
+            <div class="tags-block">
+              <div class="quick-tags-row">
+                <button type="button" class="quick-tag-pill" data-tag="Sisa Jajan">&#x1FA99; Sisa Jajan</button>
+                <button type="button" class="quick-tag-pill" data-tag="Gaji / Rezeki">&#x1F4BC; Gaji</button>
+                <button type="button" class="quick-tag-pill" data-tag="Beli Kebutuhan">&#x1F6D2; Kebutuhan</button>
+                <button type="button" class="quick-tag-pill" data-tag="Makan &amp; Jajan">&#x2615; Makan</button>
+                <button type="button" class="quick-tag-pill" data-tag="Dana Darurat">&#x1F6E1;&#xFE0F; Darurat</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tombol Simpan Transaksi -->
+          <button type="submit" class="glow-submit-btn" id="btnSubmit">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+              <polyline points="17 21 17 13 7 13 7 21" />
+              <polyline points="7 3 7 8 15 8" />
+            </svg>
+            <span>Simpan Transaksi</span>
+          </button>
+        </form>
+      </section>
+
+      <!-- ===================================================================
+           KOLOM KANAN: RIWAYAT TRANSAKSI DENGAN FILTER BULAN & TAHUN
+           =================================================================== -->
+      <section class="glass-card history-container-card">
+
+        <!-- Header Riwayat + Tombol Cepat -->
+        <div class="history-top-row">
+          <div class="card-headline">
+            <div class="headline-badge bg-gradient-purple">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="headline-title">Riwayat Transaksi</h3>
+              <p class="headline-desc" id="historyCounterBadge">0 catatan ditemukan</p>
+            </div>
+          </div>
+
+          <!-- Tombol Cepat Filter: Bulan Ini & Semua -->
+          <div class="quick-filter-pills">
+            <button type="button" class="quick-filter-btn active" id="btnQuickThisMonth">
+              &#x1F4C5; Bulan Ini
+            </button>
+            <button type="button" class="quick-filter-btn" id="btnQuickAll">
+              &#x1F310; Semua Riwayat
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Bar Bersih: Dropdown Bulan, Dropdown Tahun, dan Pencarian -->
+        <div class="month-filter-suite">
+
+          <div class="filter-dropdown-row">
+            <!-- Dropdown Bulan -->
+            <div class="filter-dropdown-box month-box">
+              <label for="filterBulanSelect" class="filter-mini-label">Pilih Bulan:</label>
+              <div class="custom-select-wrap">
+                <select id="filterBulanSelect" class="clean-dropdown-select">
+                  <option value="">Semua Bulan</option>
+                  <option value="01">Januari</option>
+                  <option value="02">Februari</option>
+                  <option value="03">Maret</option>
+                  <option value="04">April</option>
+                  <option value="05">Mei</option>
+                  <option value="06">Juni</option>
+                  <option value="07">Juli</option>
+                  <option value="08">Agustus</option>
+                  <option value="09">September</option>
+                  <option value="10">Oktober</option>
+                  <option value="11">November</option>
+                  <option value="12">Desember</option>
+                </select>
+                <span class="dropdown-chevron-icon">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </span>
+              </div>
+            </div>
+
+            <!-- Dropdown Tahun -->
+            <div class="filter-dropdown-box year-box">
+              <label for="filterTahunSelect" class="filter-mini-label">Tahun:</label>
+              <div class="custom-select-wrap">
+                <select id="filterTahunSelect" class="clean-dropdown-select">
+                  <!-- Diisi otomatis oleh JavaScript -->
+                </select>
+                <span class="dropdown-chevron-icon">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Kolom Pencarian -->
+          <div class="filter-dropdown-box search-expand-box">
+            <label for="searchKeyword" class="filter-mini-label">Cari Catatan:</label>
+            <div class="clean-input-group search-clean-group">
+              <span class="input-addon-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+              </span>
+              <input type="text" id="searchKeyword" class="clean-inner-input" placeholder="Ketik kata kunci...">
+            </div>
+          </div>
+
+        </div>
+
+        <!-- List Transaksi Scrollable -->
+        <div class="transaction-feed-container">
+          <div class="transaction-feed" id="transactionList">
+            <!-- Dirender oleh script.js -->
+          </div>
+
+          <!-- Empty State -->
+          <div class="vibrant-empty-state" id="emptyState" style="display: none;">
+            <div class="empty-icon-halo">
+              <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+              </svg>
+            </div>
+            <h4 class="empty-title">Belum Ada Transaksi</h4>
+            <p class="empty-desc" id="emptyStateMsg">
+              Tidak ada catatan pada periode ini. Mulai tambahkan pemasukan atau penarikan pertamamu!
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>Tabunganku &bull; 100% Web Statis Mandiri &bull; Siap di-deploy langsung ke <strong>GitHub Pages</strong></p>
+    </footer>
+
+  </div>
+
+  <!-- =========================================================================
+       MODAL SINKRONISASI MULTI-DEVICE
+       ========================================================================= -->
+  <div class="modal-overlay" id="syncModal" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-top">
+        <div class="modal-title-wrap">
+          <div class="modal-icon-badge">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="modal-heading">Sinkronisasi Multi-Device</h3>
+            <p class="modal-subheading">Akses data yang sama di HP, Tablet, dan Komputer</p>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" id="btnCloseSyncModal" aria-label="Tutup">&times;</button>
+      </div>
+
+      <!-- Segment Tabs -->
+      <div class="modal-segmented-tabs">
+        <button type="button" class="modal-tab-btn active" data-tab="tab-cloud">
+          &#x2601;&#xFE0F; Cloud Otomatis
+        </button>
+        <button type="button" class="modal-tab-btn" data-tab="tab-transfer">
+          &#x1F4F2; Pindah Cepat (Kode / File)
+        </button>
+      </div>
+
+      <div class="modal-content-area">
+
+        <!-- Tab 1: Cloud Otomatis (Firebase Permanen) -->
+        <div class="modal-tab-pane active" id="tab-cloud">
+          <div class="callout-card">
+            <div class="callout-icon">&#x2601;&#xFE0F;</div>
+            <div class="callout-text">
+              <strong>Cloud Otomatis Aktif!</strong>
+              <p>Firebase sudah tertanam di aplikasi. Cukup masukkan <strong>Kode Akses</strong> yang sama di semua perangkat (HP, Laptop, Tablet) &mdash; data langsung sinkron otomatis!</p>
+            </div>
+          </div>
+
+          <div class="form-group-field">
+            <label for="cloudSyncKey" class="field-label">Kode Akses / ID Tabungan Pribadi</label>
+            <div class="clean-input-group">
+              <span class="input-addon-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+              </span>
+              <input type="text" id="cloudSyncKey" class="clean-inner-input"
+                placeholder="Contoh: tabunganku-rahasia-2026">
+            </div>
+            <span class="field-helper">Masukkan kode yang sama di semua perangkat agar data tersinkron. Kode ini bersifat rahasia &mdash; jangan bagikan ke orang lain.</span>
+          </div>
+
+          <div class="modal-button-stack">
+            <button type="button" class="btn-action-primary" id="btnSaveCloudConfig">
+              &#x1F517; Hubungkan &amp; Sinkronkan
+            </button>
+            <button type="button" class="btn-action-ghost" id="btnDisconnectCloud">
+              Putuskan Cloud (Mode Lokal Saja)
+            </button>
+          </div>
+        </div>
+
+        <!-- Tab 2: Pindah Cepat -->
+        <div class="modal-tab-pane" id="tab-transfer">
+          <div class="callout-card">
+            <div class="callout-icon">&#x26A1;</div>
+            <div class="callout-text">
+              <strong>Pindah Device Tanpa Akun:</strong>
+              <p>Salin kode teks di bawah ini lalu kirim ke WhatsApp ke HP Anda. Buka web di HP, lalu klik "Terapkan
+                Kode".</p>
+            </div>
+          </div>
+
+          <div class="form-group-field">
+            <label class="field-label">Kode Data Transaksi</label>
+            <textarea id="transferCodeArea" class="clean-textarea" rows="3"
+              placeholder="Klik 'Salin Kode Data' dari device lama, atau tempel kode di sini..."></textarea>
+          </div>
+
+          <div class="action-grid-two">
+            <button type="button" class="btn-action-secondary" id="btnCopyTransferCode">
+              &#x1F4CB; Salin Kode Data
+            </button>
+            <button type="button" class="btn-action-primary" id="btnApplyTransferCode">
+              &#x1F4E5; Terapkan Kode di Sini
+            </button>
+          </div>
+
+          <div class="modal-horizontal-divider">
+            <span>atau gunakan file cadangan</span>
+          </div>
+
+          <div class="action-grid-two">
+            <button type="button" class="btn-action-outline" id="btnExportJson">
+              &#x2B07;&#xFE0F; Unduh File (.json)
+            </button>
+            <label class="btn-action-outline file-upload-wrapper">
+              &#x2B06;&#xFE0F; Buka File (.json)
+              <input type="file" id="importJsonInput" accept=".json" style="display: none;">
+            </label>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notifikasi Modern -->
+  <div id="toastNotification" class="modern-toast" role="alert" aria-live="polite"></div>
+
+  <!-- JavaScript Utama (Jalur Relatif) -->
+  <script src="./script.js"></script>
+</body>
+
+</html>
